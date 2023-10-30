@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    
+    <style>
+        body{
+            background-color: rgb(30,0,77);
+            font-family: 'Tajawal', sans-serif;
+        }
+        .tasks-table{
+            background-color: rgb(239, 239, 239);
+            width: 60%;
+            /* height: 600px; */
+            margin-top: 100px;
+
+        }
+        button{
+            border: none;
+            font-size: 20px;
+            box-shadow:0px 3px 5px rgba(168, 168, 168, 0.38) ;
+        }
+
+        button.cir{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            line-height: 0;
+        }
+        .task{
+            display: flex;
+            background-color: rgb(255, 255, 255);
+            padding: 4px;
+            border-bottom: solid black 1px;
+            transition: box-shadow 0.2;
+            
+        }
+        .done {
+            background-color: rgb(66, 253, 94);
+        }
+        .task:hover{
+            box-shadow: 0px 3px 15px rgba(97,97 ,97,0.843 );
+        }
+        
+    </style>
+
+
+</head>
+<body>
+    <div style="direction: rtl;">
+        <div style="display: flex; justify-content: center;align-items: center;">
+            <divb class="tasks-table">
+                <div style="width: 100%;background: rgb(68, 0, 176);color: wheat;padding-top: 8px;padding-bottom: 8px;text-align: center;">
+                    <h1 style="display: inline;">مهامي</h1>
+                    <button id="add-bu" class="cir" style="float: right;background: wheat;margin-right: 10px;"><span class="material-symbols-outlined">
+                        add
+                    </span></button>
+                </div>
+                <!-- Tasks -->
+                <div id="Tasks" style="padding: 20px;"> 
+                <div class="task">
+                    <div style="width: 70%;">
+                        <h2>قراءه كناب</h2>
+                        <div>
+                            <span class="material-symbols-outlined">
+                                calendar_month
+                            </span>
+                            <samp>10/10/2030</samp>
+                        </div>
+                    </div>
+                    <div style="display: flex;justify-content: space-between;align-items: center; width: 30%;color: wheat;">
+                        <button class="cir"style="background-color:rgb(249,20,30);color: wheat">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                        <button class="cir" style="background-color:rgb(33, 93, 0);color: wheat">
+                            <span class="material-symbols-outlined">
+                                done
+                            </span>
+                        </button>
+                        <button class="cir" style="background-color:rgb(62, 33, 177);color: wheat">
+                            <span class="material-symbols-outlined">
+                                edit
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                </div>     
+                <!-- Tasks -->
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    let task=
+        {
+            "title": "قراءة كتاب",
+            "date": "15/10/2020",
+            "isDone": false
+        }
+    
+    let tasks =[
+        {
+            "title":"قراءة كتاب",
+            "date":"15/10/2020",
+            "isDone": false
+        },
+        {
+            "title": "انهاء كتاب",
+            "date": "15/10/2020",
+            "isDone": false
+        },
+        {
+            "title": "تغير كتاب",
+            "date": "15/10/2020",
+            "isDone": false
+        },
+        
+
+    
+    ]
+    tasks = JSON.parse(localStorage.getItem("tasks"))
+    function fillTask(){
+
+    document.getElementById("Tasks").innerHTML ="" 
+    let index=0
+    for(task of tasks){
+        let con =
+        `<div id="Tasks" style="padding: 20px;"> 
+                <div class="task ${task.isDone ?"done":""}">
+
+                    <div style="width: 70%;">
+                        <h2>${task.title}</h2>
+                        <div>
+                            <span class="material-symbols-outlined">
+                                calendar_month
+                            </span>
+                            <samp>${task.date}</samp>
+                        </div>
+                    </div>
+                    <div style="display: flex;justify-content: space-between;align-items: center; width: 30%;color: wheat;">
+                        <button onclick="deleteTasl(${index})"class="cir"style="background-color:rgb(249,20,30);color: wheat">
+                            <span class="material-symbols-outlined">delete</span>
+                        </button>
+                        ${task.isDone ? 
+                            `<button onclick="completeTasl(${index})" class="cir" style="background-color:rgb(190,12, 10);color: wheat">
+                                <span class="material-symbols-outlined">
+                                    cancel
+                                </span>
+                            </button>`
+                            :
+                            `<button onclick="completeTasl(${index})" class="cir" style="background-color:rgb(33, 93, 0);color: wheat">
+                                <span class="material-symbols-outlined">
+                                    done
+                                </span>
+                            </button>`
+                        }
+                        
+                        <button onclick="editTasl(${index})" class="cir" style="background-color:rgb(62, 33, 177);color: wheat">
+                            <span class="material-symbols-outlined">
+                                edit
+                            </span>
+                        </button>
+                    </div>
+                </div>
+        </div> `
+        document.getElementById("Tasks").innerHTML +=con
+        index++
+        
+    }}
+    fillTask()
+    
+    document.getElementById("add-bu").addEventListener("click", function () {
+            let taskName =prompt("ادخل مهمة جديده")
+            let now =new Date()
+            let date=now.getDate()+"/"+(now.getMonth()+1)+"/"+now.getFullYear()
+            let taskObj ={
+                "title": taskName,
+                "date": date,
+                "isDone": false
+            }
+            tasks.push(taskObj)
+            let tasksSteing =JSON.stringify(tasks)
+            //console.log(tasksSteing)
+            localStorage.setItem("tasks", tasksSteing )
+            Storage()
+            fillTask()
+        })
+
+        function deleteTasl(index){
+            let task=tasks[index]
+            let isConfirmed=confirm("هل انت متاكد من الحذف  : " + task.title)
+            if(isConfirmed)
+            {
+            tasks.splice(index,1)
+            Storage()
+            fillTask()
+            }
+        }
+        function editTasl(index){
+            let taskEdit = tasks[index]
+            let newtaskName = prompt("ادخل اسم المهمة جديده : " + taskEdit.title)
+            let task= tasks[index]
+            task.title= newtaskName
+            alert(newtaskName)
+            Storage()
+            fillTask()
+
+        }
+        
+        function completeTasl(index) {
+            let task = tasks[index]
+            task.isDone =!task.isDone
+            // if(task.isDone){
+            //     task.isDone = false
+            // }else{
+            //     task.isDone = true
+            // }
+            Storage()
+            fillTask()
+        }
+        //=================localStorage
+        function Storage(){
+        let tasksSteing = JSON.stringify(tasks)
+            //console.log(tasksSteing)
+            localStorage.setItem("tasks", tasksSteing)
+        }
+</script>
+</html>
